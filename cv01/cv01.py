@@ -32,7 +32,7 @@ def main(images):
     for img in histograms:
         differences = []
         for img2 in histograms:
-            difference = opencv.compareHist(img, img2, opencv.HISTCMP_CHISQR)
+            difference = opencv.compareHist(img, img2, opencv.HISTCMP_BHATTACHARYYA)
             differences.append(difference)
         image_differences.append(differences)
 
