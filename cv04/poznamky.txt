@@ -1,0 +1,11 @@
+do stupňů šedi -> DFT
+
+
+
+šedo -> DCT 0,0-10,10 -> IDCT -> výsledek
+DCT
+vysoké frekvence
+for cyklus
+
+30x30
+50x50
