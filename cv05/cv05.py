@@ -38,28 +38,69 @@ def rotatingMaskFilter(image):
     height, width = image.shape
     result = np.zeros_like(image, dtype=np.float32)
     masks = [
-        [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)],
-        [(0,0), (0,1), (0,2), (1,1), (2,0), (2,1), (2,2)],
-        [(0,0), (1,0), (1,1), (2,0), (2,1), (2,2), (1,2)],
-        [(0,0), (0,1), (0,2), (1,1), (1,2), (2,2)], 
-        [(0,0), (1,0), (1,1), (2,1), (2,2)], 
-        [(0,2), (1,1), (1,2), (2,0), (2,1), (2,2)], 
-        [(0,0), (0,1), (0,2), (1,0), (1,1), (2,0)], 
-        [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2)], 
-        [(1,0), (1,1), (1,2), (2,0), (2,1), (2,2)] 
+        np.array([ 
+            [1, 1, 1],
+            [1, 1, 1],
+            [1, 1, 1]
+        ]),
+        np.array([
+            [1, 1, 1],
+            [0, 1, 0],
+            [1, 1, 1]
+        ]),
+        np.array([
+            [1, 0, 1],
+            [1, 1, 1],
+            [1, 0, 1]
+        ]),
+        np.array([
+            [1, 1, 1],
+            [0, 1, 1],
+            [0, 0, 1]
+        ]),
+        np.array([
+            [1, 0, 0],
+            [1, 1, 0],
+            [1, 1, 1]
+        ]),
+        np.array([
+            [0, 0, 1],
+            [0, 1, 1],
+            [1, 1, 1]
+        ]),
+        np.array([
+            [1, 1, 1],
+            [1, 1, 0],
+            [1, 0, 0]
+        ]),
+        np.array([
+            [1, 1, 1],
+            [1, 1, 1],
+            [0, 0, 0]
+        ]),
+        np.array([
+            [0, 0, 0],
+            [1, 1, 1],
+            [1, 1, 1]
+        ])
     ]
+    
     padded_image = np.pad(image, ((1, 1), (1, 1)), mode='reflect')
+    
     for i in range(height):
         for j in range(width):
             min_variance = float('inf')
-            best_mask_values = []
-            for mask_positions in masks:
-                mask_values = [padded_image[i + pos[0], j + pos[1]] for pos in mask_positions]
+            best_mean = 0
+            
+            for mask in masks:
+                neighborhood = padded_image[i:i+3, j:j+3]
+                mask_values = neighborhood[mask == 1]
                 variance = np.var(mask_values)
                 if variance < min_variance:
                     min_variance = variance
-                    best_mask_values = mask_values
-            result[i, j] = np.mean(best_mask_values)
+                    best_mean = np.mean(mask_values)
+            result[i, j] = best_mean
+    
     return result.astype(np.uint8)
 
 def medianFilter(image, kernel_shape):
