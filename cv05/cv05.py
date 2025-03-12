@@ -35,34 +35,32 @@ def simpleAveraging(image):
     return cv2.filter2D(image, -1, kernel)
 
 def rotatingMaskFilter(image):
-    kernel_shapes = [
-        np.array([[1, 1, 1], [0, 0, 0], [0, 0, 0]]),
-        np.array([[0, 1, 1], [0, 0, 1], [0, 0, 0]]),
-        np.array([[0, 0, 1], [0, 0, 1], [0, 0, 1]]),
-        np.array([[0, 0, 0], [0, 0, 1], [0, 1, 1]]),
-        np.array([[0, 0, 0], [0, 0, 0], [1, 1, 1]]),
-        np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0]]),
-        np.array([[1, 0, 0], [1, 0, 0], [1, 0, 0]]),
-        np.array([[1, 1, 0], [1, 0, 0], [0, 0, 0]])
+    height, width = image.shape
+    result = np.zeros_like(image, dtype=np.float32)
+    masks = [
+        [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)],
+        [(0,0), (0,1), (0,2), (1,1), (2,0), (2,1), (2,2)],
+        [(0,0), (1,0), (1,1), (2,0), (2,1), (2,2), (1,2)],
+        [(0,0), (0,1), (0,2), (1,1), (1,2), (2,2)], 
+        [(0,0), (1,0), (1,1), (2,1), (2,2)], 
+        [(0,2), (1,1), (1,2), (2,0), (2,1), (2,2)], 
+        [(0,0), (0,1), (0,2), (1,0), (1,1), (2,0)], 
+        [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2)], 
+        [(1,0), (1,1), (1,2), (2,0), (2,1), (2,2)] 
     ]
-    
     padded_image = np.pad(image, ((1, 1), (1, 1)), mode='reflect')
-    result = np.zeros_like(image)
-    
-    for i in range(image.shape[0]):
-        for j in range(image.shape[1]):
+    for i in range(height):
+        for j in range(width):
             min_variance = float('inf')
-            best_mask = None
-            for kernel in kernel_shapes:
-                region = padded_image[i:i+3, j:j+3]
-                masked_region = region * kernel
-                variance = np.var(masked_region[masked_region != 0])
+            best_mask_values = []
+            for mask_positions in masks:
+                mask_values = [padded_image[i + pos[0], j + pos[1]] for pos in mask_positions]
+                variance = np.var(mask_values)
                 if variance < min_variance:
                     min_variance = variance
-                    best_mask = kernel
-            result[i, j] = np.mean(padded_image[i:i+3, j:j+3][best_mask != 0])
-    
-    return result
+                    best_mask_values = mask_values
+            result[i, j] = np.mean(best_mask_values)
+    return result.astype(np.uint8)
 
 def medianFilter(image, kernel_shape):
     padded_image = np.pad(image, ((kernel_shape[0]//2, kernel_shape[0]//2), (kernel_shape[1]//2, kernel_shape[1]//2)), mode='reflect')
@@ -99,7 +97,7 @@ def main():
     robot_s_gray = convertToGray(robot_s)
     plot(robot_s, robot_s_gray)
     pss_gray = convertToGray(pss)
-    plot(pss, pss_gray)
+    # plot(pss, pss_gray)
 
     
 if __name__ == "__main__":
