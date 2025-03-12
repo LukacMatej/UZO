@@ -41,46 +41,41 @@ def rotatingMaskFilter(image):
         np.array([ 
             [1, 1, 1],
             [1, 1, 1],
-            [1, 1, 1]
+            [0, 1, 1]
         ]),
         np.array([
             [1, 1, 1],
-            [0, 1, 0],
-            [1, 1, 1]
-        ]),
-        np.array([
-            [1, 0, 1],
             [1, 1, 1],
             [1, 0, 1]
         ]),
         np.array([
             [1, 1, 1],
-            [0, 1, 1],
-            [0, 0, 1]
-        ]),
-        np.array([
-            [1, 0, 0],
-            [1, 1, 0],
-            [1, 1, 1]
-        ]),
-        np.array([
-            [0, 0, 1],
-            [0, 1, 1],
-            [1, 1, 1]
+            [1, 1, 1],
+            [1, 1, 0]
         ]),
         np.array([
             [1, 1, 1],
             [1, 1, 0],
-            [1, 0, 0]
+            [1, 1, 1]
+        ]),
+        np.array([
+            [1, 1, 0],
+            [1, 1, 1],
+            [1, 1, 1]
+        ]),
+        np.array([
+            [1, 0, 1],
+            [1, 1, 1],
+            [1, 1, 1]
+        ]),
+        np.array([
+            [0, 1, 1],
+            [1, 1, 1],
+            [1, 1, 1]
         ]),
         np.array([
             [1, 1, 1],
-            [1, 1, 1],
-            [0, 0, 0]
-        ]),
-        np.array([
-            [0, 0, 0],
-            [1, 1, 1],
+            [0, 1, 1],
             [1, 1, 1]
         ])
     ]
@@ -138,7 +133,7 @@ def main():
     robot_s_gray = convertToGray(robot_s)
     plot(robot_s, robot_s_gray)
     pss_gray = convertToGray(pss)
-    # plot(pss, pss_gray)
+    plot(pss, pss_gray)
 
     
 if __name__ == "__main__":
