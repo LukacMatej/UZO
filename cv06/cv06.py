@@ -59,9 +59,7 @@ def applyKirsch(image):
     gradient_y = cv2.filter2D(image, cv2.CV_64F, kernel=kernel_y)
     
     image_sob = np.sqrt(gradient_x**2 + gradient_y**2)
-    
-    image_sob = np.uint8(255 * image_sob / np.max(image_sob))
-    
+        
     return image_sob
 
 def applySobel(image):
@@ -77,9 +75,7 @@ def applySobel(image):
     gradient_y = cv2.filter2D(image, cv2.CV_64F, kernel=kernel_y)
     
     image_sob = np.sqrt(gradient_x**2 + gradient_y**2)
-    
-    image_sob = np.uint8(255 * image_sob / np.max(image_sob))
-    
+        
     return image_sob
 
 
