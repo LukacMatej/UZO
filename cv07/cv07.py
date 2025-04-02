@@ -13,8 +13,6 @@ def calculateGreenChannel(image):
     R, G, B = np.float32(img_rgb[:, :, 0]), np.float32(img_rgb[:, :, 1]), np.float32(img_rgb[:, :, 2])
     return 255 - ((G * 255) / (R + G + B))
 
-import numpy as np
-
 def threshold_image(green_channel):
     green_channel = green_channel.astype(np.uint8)
     
