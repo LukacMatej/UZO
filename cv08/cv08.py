@@ -122,7 +122,7 @@ def main():
     binary_im1 = openMethod(image1_thresh, 8)
     _, info_im1 = colorRegions(binary_im1)
     img1_X = drawCentroids(image1, info_im1)
-    # plotImgs1(image1,image1_thresh,binary_im1,img1_X)
+    plotImgs1(image1,image1_thresh,binary_im1,img1_X)
     
     image2 = loadImage("./cv08/cv08_im2.bmp")
     image2_red = calculateRedChannel(image2)
